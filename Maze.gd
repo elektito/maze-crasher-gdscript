@@ -148,6 +148,7 @@ func maze_step(rebuild_map=false):
 
 
 func generate_map_from_maze():
+	$maze_map.clear()
 	for row in range(rows):
 		for col in range(cols):
 			var cell = cell_at(row, col)
