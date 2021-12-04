@@ -198,7 +198,7 @@ func _on_slow_gen_timer_timeout():
 func _input(event):
 	var zoom_step = Vector2(0.1, 0.1)
 	if debug_mode and event is InputEventMouseButton and event.button_index == BUTTON_WHEEL_UP and event.is_pressed():
-		$player/camera.zoom += zoom_step
-	if debug_mode and event is InputEventMouseButton and event.button_index == BUTTON_WHEEL_DOWN and event.is_pressed():
 		if $player/camera.zoom > zoom_step:
 			$player/camera.zoom -= zoom_step
+	if debug_mode and event is InputEventMouseButton and event.button_index == BUTTON_WHEEL_DOWN and event.is_pressed():
+		$player/camera.zoom += zoom_step
