@@ -21,6 +21,10 @@ func _physics_process(delta):
 
 
 func toggle_lights():
-	$light_main.visible = not $light_main.visible
-	$light_aux.visible = not $light_aux.visible
-	$light_player.visible = not $light_player.visible
+	enable_lights(not $light_main.visible)
+
+
+func enable_lights(value: bool):
+	$light_main.visible = value
+	$light_aux.visible = value
+	$light_player.visible = value
