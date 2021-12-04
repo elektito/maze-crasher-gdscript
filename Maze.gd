@@ -104,6 +104,9 @@ func _ready():
 
 
 func rebuild_maze():
+	$player/camera.limit_right = cols * $maze_map.cell_size.x
+	$player/camera.limit_bottom = rows * $maze_map.cell_size.y
+	
 	maze = []
 	for row in range(rows):
 		for col in range(cols):
