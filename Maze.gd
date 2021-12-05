@@ -87,6 +87,28 @@ func get_unvisited_neighbors(cell):
 	return neighbors
 
 
+func get_connected_neighbors(cell):
+	var neighbors := []
+	
+	var top = cell_at(cell.row - 1, cell.col)
+	if not cell.top_wall and top != null:
+		neighbors.append(top)
+	
+	var bottom = cell_at(cell.row + 1, cell.col)
+	if not cell.bottom_wall and bottom != null:
+		neighbors.append(bottom)
+	
+	var left = cell_at(cell.row, cell.col - 1)
+	if not cell.left_wall and left != null:
+		neighbors.append(left)
+	
+	var right = cell_at(cell.row, cell.col + 1)
+	if not cell.right_wall and right != null:
+		neighbors.append(right)
+	
+	return neighbors
+
+
 func cell_index(cell):
 	return cell.row * cols + cell.col
 
@@ -101,6 +123,60 @@ func cell_at(row: int, col: int):
 func _ready():
 	randomize()
 	rebuild_maze()
+	
+	var q := []
+	var source = cell_at(0, 0)
+	var dist := {}
+	var prev := {}
+	for cell in maze:
+		dist[cell] = INF
+		prev[cell] = null
+		q.append(cell)
+	dist[source] = 0
+	while q != []:
+		var u = null
+		for v in q:
+			if u == null or dist[v] < dist[u]:
+				u = v
+		q.erase(u)
+		
+		for v in get_connected_neighbors(u):
+			if not v in q:
+				continue
+			var alt = dist[u] + 1
+			if alt < dist[v]:
+				dist[v] = alt
+				prev[v] = u
+	
+	var maxv = null
+	for v in maze:
+		if maxv == null or dist[v] > dist[maxv]:
+			maxv = v
+	print('maxv: ', maxv, ' ', dist[maxv])
+	var cur = maxv
+	var path := []
+	while cur in prev:
+		path.append(cur)
+		cur = prev[cur]
+	path.invert()
+	print('path to maxv: ', path)
+	
+	var line := Line2D.new()
+	line.modulate = Color.red
+	line.width = 2
+	var cellsize := 32
+	for cell in path:
+		var cell_pos := Vector2(cell.col * cellsize + cellsize / 2, cell.row * cellsize + cellsize / 2)
+		line.add_point(cell_pos)
+	add_child(line)
+	
+	return
+	print('dist:')
+	for k in dist.keys():
+		print('   ', k, ': ', dist[k])
+	print('prev:')
+	for k in prev.keys():
+		print('   ', k, ': ', prev[k])
 
 
 func rebuild_maze():
