@@ -43,7 +43,7 @@ class Cell:
 		return tile_name
 	
 	func _to_string():
-		return str(row) + ',' + str(col)
+		return '<' + str(row) + ',' + str(col) + '>'
 
 
 func connect_cells(cell1, cell2):
