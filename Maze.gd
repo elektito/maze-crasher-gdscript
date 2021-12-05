@@ -205,7 +205,6 @@ func rebuild_maze():
 
 
 func maze_step(rebuild_map=false):
-	#return
 	var cell = stack.pop_back()
 	if cell == null:
 		return
